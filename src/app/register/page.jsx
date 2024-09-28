@@ -1,11 +1,15 @@
 "use client"
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { registerUser } from '@/service/user.service';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 
 const Register = () => {
+
+  const router = useRouter();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,19 +25,54 @@ const Register = () => {
     { value: 'user', label: 'User' },
   ];
 
-  console.log(role);
+  const handleRegister = async () => {
+    if (password !== passwordRepeat) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const userData = {
+      name,
+      email,
+      password,
+      role,
+      profilePictureUrl,
+      phoneNumber
+    };
+
+    try {
+      const response = await registerUser(userData);
+
+      if(!response){
+        alert("Register Failed");
+        return;
+      }
+
+      console.log(response.status);
+      
+      if (response?.status === "OK") {
+        router.push("/login");
+      }
+      
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+
+  
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   let bgStyle =
-    "bg-[url('https://images.pexels.com/photos/1262304/pexels-photo-1262304.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover h-screen rounded-lg w-full";
+    "hidden lg:flex bg-[url('https://images.pexels.com/photos/1262304/pexels-photo-1262304.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover h-screen rounded-lg w-full";
 
 
   return (
-    <div className="grid lg:flex gap-3 min-h-screen items-center justify-center p-5">
-      <div className=' w-full'>
+    <div className="grid items-center justify-center min-h-screen gap-3 p-5 lg:flex">
+      <div className='w-full '>
         <p className='text-xl font-bold text-center'>Register Your Account</p> 
          <div className='flex items-center justify-center'>
           <div className='flex flex-col w-[400px] gap-3 ml-5'>
@@ -50,9 +89,9 @@ const Register = () => {
             )}
 
             <Input type="text" placeholder="Profile Picture URL" onChange={(e) => setProfilePictureUrl(e.target.value)}/>
-            <Input type="number" placeholder="Phone Number" onChange={(e) => setPhoneNumber(e.target.value)}/>
+            <Input type="text" placeholder="Phone Number" onChange={(e) => setPhoneNumber(e.target.value)}/>
             <Button className='bg-blue-700'>Register</Button>
-            <p className='text-sm'>Already have an account? <Link className='font-bold text-blue-700 text-sm' href="/login">Login</Link></p>
+            <p className='text-sm'>Already have an account? <Link className='text-sm font-bold text-blue-700' href="/login">Login</Link></p>
          </div>
         </div>
       </div>
