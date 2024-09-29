@@ -10,7 +10,7 @@ export default function Home() {
   return (
     // Ini akan menjadi welcome page
     <div className="flex items-center justify-center w-screen h-screen">
-      <h1 className="text-2xl font-Bold">RRSH Travel</h1>
+      <h1 className="text-2xl font-Bold">Travel.Inc</h1>
       <Link href={"/login"}>
         <Button>Login</Button>
       </Link>

@@ -90,7 +90,7 @@ const Register = () => {
 
             <Input type="text" placeholder="Profile Picture URL" onChange={(e) => setProfilePictureUrl(e.target.value)}/>
             <Input type="text" placeholder="Phone Number" onChange={(e) => setPhoneNumber(e.target.value)}/>
-            <Button className='bg-blue-700'>Register</Button>
+            <Button className='bg-blue-700' onClick={handleRegister}>Register</Button>
             <p className='text-sm'>Already have an account? <Link className='text-sm font-bold text-blue-700' href="/login">Login</Link></p>
          </div>
         </div>
